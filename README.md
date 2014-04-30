@@ -240,6 +240,7 @@ JSON response into a native Perl data structure.
 # SEE ALSO
 
 - [HTTP::Response](https://metacpan.org/pod/HTTP::Response)
+- [LWP::UserAgent](https://metacpan.org/pod/LWP::UserAgent)
 - [URI](https://metacpan.org/pod/URI)
 - [WebService::OANDA::ExchangeRates::Response](https://github.com/oanda/perl-webservice-oanda-exchangerates/blob/master/lib/WebService/OANDA/ExchangeRates/Response.pm)
 - [OANDA Exchange Rates API](http://www.oanda.com/rates) landing page

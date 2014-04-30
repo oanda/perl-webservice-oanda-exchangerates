@@ -467,6 +467,8 @@ settings, removing the default headers will cause authentication to fail.
 
 =item * L<HTTP::Response>
 
+=item * L<LWP::UserAgent>
+
 =item * L<URI>
 
 =item * L<WebService::OANDA::ExchangeRates::Response>
