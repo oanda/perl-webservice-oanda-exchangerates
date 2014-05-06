@@ -189,7 +189,7 @@ API
   print $response->data->{remaining_quotes} if $response->is_success;
 
   # get a series of quotes for a base currency
-  $response = $api->get_quotes(
+  $response = $api->get_rates(
       base_currency => 'USD',
       quote         => [ qw{ EUR CAD } ],
   );
@@ -311,11 +311,11 @@ For plans that have no quote limits, I<remaining_quotes> will equal "unlimited".
 
 =back
 
-=head3 get_quotes
+=head3 get_rates
 
 =over 4
 
-=item $response = $api->get_quotes(%options)
+=item $response = $api->get_rates(%options)
 
 Returns the C</v1/rates/XXX.json> endpoint; a list of quotes for a specific base
 currency.

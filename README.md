@@ -23,7 +23,7 @@ API
     print $response->data->{remaining_quotes} if $response->is_success;
 
     # get a series of quotes for a base currency
-    $response = $api->get_quotes(
+    $response = $api->get_rates(
         base_currency => 'USD',
         quote         => [ qw{ EUR CAD } ],
     );
@@ -272,7 +272,7 @@ calls in [WebService::OANDA::ExchangeRates](https://github.com/oanda/perl-webser
 
     my $api = WebService::OANDA::ExchangeRates->new(api_key => 'YOUR_API_KEY');
 
-    my $response = $api->get_quotes(
+    my $response = $api->get_rates(
         base_currency => 'USD',
         quote         => [ qw{ EUR CAD } ],
     );
