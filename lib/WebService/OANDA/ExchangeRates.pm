@@ -1,22 +1,15 @@
 package WebService::OANDA::ExchangeRates;
-# ABSTRACT: A Perl interface to the OANDA Exchange Rates API
 
 use JSON::XS;
 use LWP::UserAgent;
 use Moo;
-use Type::Params qw{ compile };
-use Types::Standard qw{
-    slurpy
-    ArrayRef
-    Dict
-    Int
-    Optional
-    Str
-    StrMatch
-};
+use Types::Standard qw{ ArrayRef Int Str StrMatch };
 use Type::Utils qw{ declare as where coerce from via enum};
 use Types::URI qw{ Uri };
 use WebService::OANDA::ExchangeRates::Response;
+
+use vars qw($VERSION);
+$VERSION = "0.001";
 
 has base_url => (
     is       => 'ro',
@@ -275,7 +268,7 @@ B<NOTE:> This endpoint usually returns an array of hashes which contain I<code>
 and I<description> keys but C<get_currencies()> massages them into a hash with
 the I<code> as the key and I<description> as the value.
 
-The data strUcture returned by C<< $response->data >> will look something like this:
+The data structure returned by C<< $response->data >> will look something like this:
 
   {
       USD => 'US Dollar',
@@ -357,7 +350,10 @@ B<DEFAULT:> 5
 
 =item * fields
 
-Which fields to return in the quotes.  These can currently be:
+Which fields to return in the quotes. This can be specified as a single string
+or an arrayref of strings.
+
+As of this writing, fields can be any of the following:
 
 =over 4
 
@@ -371,7 +367,13 @@ Which fields to return in the quotes.  These can currently be:
 
 =back
 
+It should be noted that this module does not restrict what these strings are
+so as to be forward compatible with any changes.
+
 B<DEFAULT:> averages
+
+  fields => 'all'
+  fields => [qw{ averages midpoint }],
 
 =item * date
 
