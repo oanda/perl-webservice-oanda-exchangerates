@@ -1,5 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.001     2014-05-07 15:38:45-04:00 America/Toronto
         - Initial release
 
