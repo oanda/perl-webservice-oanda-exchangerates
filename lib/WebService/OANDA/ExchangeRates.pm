@@ -18,9 +18,6 @@ use Type::Utils qw{ declare as where coerce from via enum};
 use Types::URI qw{ Uri };
 use WebService::OANDA::ExchangeRates::Response;
 
-use vars qw($VERSION);
-$VERSION = "0.001";
-
 has base_url => (
     is       => 'ro',
     isa      => Uri,
