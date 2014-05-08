@@ -17,10 +17,13 @@ eval "use Pod::Coverage $min_pc";
 plan skip_all => "Pod::Coverage $min_pc required for testing POD coverage"
     if $@;
 
-pod_coverage_ok('WebService::OANDA::ExchangeRates');
+pod_coverage_ok(
+    'WebService::OANDA::ExchangeRates',
+    { also_private => [ qr/(?:^[A-Z_]+$|^_?has_)/ ], }
+);
 pod_coverage_ok(
     'WebService::OANDA::ExchangeRates::Response',
-    { also_private => [ qr/^[A-Z_]+$/ ], }
+    { also_private => [ qr/(?:^[A-Z_]+$|^_?has_)/ ], }
 );
 
 done_testing();

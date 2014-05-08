@@ -9,7 +9,7 @@ use Types::URI qw{ Uri };
 use WebService::OANDA::ExchangeRates::Response;
 
 use vars qw($VERSION);
-$VERSION = "0.001";
+$VERSION = "0.002";
 
 has base_url => (
     is       => 'ro',

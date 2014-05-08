@@ -23,7 +23,7 @@ my $raw_data = '{"success": "1"}';
 foreach my $ro_method (qw{base_url proxy timeout api_key user_agent}) {
     like(
         exception { $api->$ro_method('a new value') },
-        qr{is a read-only accessor},
+        qr{$ro_method},
         "$ro_method is read only"
     );
 }
