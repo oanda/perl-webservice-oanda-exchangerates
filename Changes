@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.003     2014-07-16 11:27:11-04:00 America/Toronto
         - new parameter 'data_set' for use with get_rates and get_currencies
         - provides access to new European Central Bank rates
 
