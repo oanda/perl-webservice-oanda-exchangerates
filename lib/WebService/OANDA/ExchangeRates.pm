@@ -9,7 +9,7 @@ use Types::URI qw{ Uri };
 use WebService::OANDA::ExchangeRates::Response;
 
 use vars qw($VERSION);
-$VERSION = "0.002";
+$VERSION = "0.003";
 
 has base_url => (
     is       => 'ro',
@@ -49,6 +49,7 @@ sub _build__rates_validator {
         end             => $Date,
         fields          => $Fields,
         decimal_places  => $DecimalPlaces,
+        data_set        => Str,
     );
 
     return sub {
@@ -102,8 +103,9 @@ sub _build_user_agent {
 # GET /currencies.json
 sub get_currencies {
     my $self = shift;
+    my %params = @_;
 
-    my $response = $self->_get_request('currencies.json');
+    my $response = $self->_get_request('currencies.json', \%params);
 
     # convert arrayref[hashref] into hashref
     if ( $response->is_success && exists $response->data->{currencies}) {
@@ -184,7 +186,7 @@ API
       quote         => [ qw{ EUR CAD } ],
   );
   if ($response->is_success) {
-      my $base_currency = $quote->data->{base_currency};
+      my $base_currency = $response->data->{base_currency};
       print "Base Currency: $base_currency\n";
       foreach my $quote_currency (keys %{$response->data->{quotes}) {
           my $quote = $response->data->{quotes}{$quote_currency};
@@ -256,13 +258,14 @@ All API methods return a L<WebService::OANDA::ExchangeRates::Response> object
 that provides access to the L<HTTP::Response> object and has deserialized the
 JSON response into a native Perl data structure.
 
-=head3 get_currencies
+=head3 get_currencies(%options)
 
 =over 4
 
 =item $response = $api->get_currencies()
 
-Returns the C</v1/currencies.json> endpoint; a hash of valid currency codes.
+Returns the C</v1/currencies.json> endpoint; a hash of valid currency codes for
+the chosen dataset.
 
 B<NOTE:> This endpoint usually returns an array of hashes which contain I<code>
 and I<description> keys but C<get_currencies()> massages them into a hash with
@@ -276,6 +279,20 @@ The data structure returned by C<< $response->data >> will look something like t
       CAD => 'Canadian Dollar',
       ...
   }
+
+=over 4
+
+=item * data_set
+
+Which data set to use. The API, as of this writing, has two data sets.  They are
+the default I<oanda> rate or the I<ecb> (European Central Bank) rate. Each
+dataset tracks a different number of currencies.
+
+B<DEFAULT:> oanda
+
+  data_set => 'ecb'
+
+=back
 
 =back
 
@@ -338,6 +355,15 @@ B<DEFAULT:> All other available currencies.
   quote => 'EUR'
   quote => [qw{ EUR GBP CHF }]
 
+=item * data_set
+
+Which data set to use. The API, as of this writing, has two data sets.  They are
+the default I<oanda> rate or the I<ecb> (European Central Bank) rate.
+
+B<DEFAULT:> oanda
+
+  data_set => 'ecb'
+
 =item * decimal_places
 
 The number of decimal places to provide in the quote. May be a positive integer
@@ -368,7 +394,8 @@ As of this writing, fields can be any of the following:
 =back
 
 It should be noted that this module does not restrict what these strings are
-so as to be forward compatible with any changes.
+so as to be forward compatible with any changes. When using the C<data_set>
+parameter for European Central Bank (ECB) rates, this parameter is ignored.
 
 B<DEFAULT:> averages
 

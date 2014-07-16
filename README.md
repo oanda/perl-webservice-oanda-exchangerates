@@ -28,7 +28,7 @@ API
         quote         => [ qw{ EUR CAD } ],
     );
     if ($response->is_success) {
-        my $base_currency = $quote->data->{base_currency};
+        my $base_currency = $response->data->{base_currency};
         print "Base Currency: $base_currency\n";
         foreach my $quote_currency (keys %{$response->data->{quotes}) {
             my $quote = $response->data->{quotes}{$quote_currency};
@@ -92,11 +92,12 @@ All API methods return a [WebService::OANDA::ExchangeRates::Response](https://me
 that provides access to the [HTTP::Response](https://metacpan.org/pod/HTTP::Response) object and has deserialized the
 JSON response into a native Perl data structure.
 
-### get\_currencies
+### get\_currencies(%options)
 
 - $response = $api->get\_currencies()
 
-    Returns the `/v1/currencies.json` endpoint; a hash of valid currency codes.
+    Returns the `/v1/currencies.json` endpoint; a hash of valid currency codes for
+    the chosen dataset.
 
     **NOTE:** This endpoint usually returns an array of hashes which contain _code_
     and _description_ keys but `get_currencies()` massages them into a hash with
@@ -110,6 +111,16 @@ JSON response into a native Perl data structure.
             CAD => 'Canadian Dollar',
             ...
         }
+
+    - data\_set
+
+        Which data set to use. The API, as of this writing, has two data sets.  They are
+        the default _oanda_ rate or the _ecb_ (European Central Bank) rate. Each
+        dataset tracks a different number of currencies.
+
+        **DEFAULT:** oanda
+
+            data_set => 'ecb'
 
 ### get\_remaining\_quotes
 
@@ -162,6 +173,15 @@ JSON response into a native Perl data structure.
             quote => 'EUR'
             quote => [qw{ EUR GBP CHF }]
 
+    - data\_set
+
+        Which data set to use. The API, as of this writing, has two data sets.  They are
+        the default _oanda_ rate or the _ecb_ (European Central Bank) rate.
+
+        **DEFAULT:** oanda
+
+            data_set => 'ecb'
+
     - decimal\_places
 
         The number of decimal places to provide in the quote. May be a positive integer
@@ -185,7 +205,8 @@ JSON response into a native Perl data structure.
         - lows - the lowest bid and ask
 
         It should be noted that this module does not restrict what these strings are
-        so as to be forward compatible with any changes.
+        so as to be forward compatible with any changes. When using the `data_set`
+        parameter for European Central Bank (ECB) rates, this parameter is ignored.
 
         **DEFAULT:** averages
 
